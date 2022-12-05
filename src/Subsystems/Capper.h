@@ -12,8 +12,8 @@
 #include <Async/Subsystem.h>
 
 #define MOTOR_INTERFACE 1
-#define STEP_PIN 5
-#define DIR_PIN 6
+#define STEP_PIN 8
+#define DIR_PIN 7
 
 class Capper: public Subsystem {
     private:
@@ -31,11 +31,11 @@ class Capper: public Subsystem {
     /**
      * @brief Function to initialize the Capper before it completes a cycle of its motion.
      */
-    void initialize();
+    virtual void initialize();
     /**
      * @brief Function to update the position of the Capper.
      */
-    void update();
+    virtual void update();
 };
 
 #endif
