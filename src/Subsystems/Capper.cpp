@@ -7,9 +7,9 @@
 
 #include <Subsystems/Capper.h>
 
-#define STEPPER_SPEED 200
-#define STEPPER_ACCEL 50
-#define STEPS 1000          // Number of steps the motor will move, positive = clockwise
+#define STEPPER_SPEED 400
+#define STEPPER_ACCEL 500
+#define STEPS 1600          // Number of steps the motor will move, positive = clockwise
 
 void Capper::initialize(){
     completed = false;                          // Set current state back to false before motion
@@ -17,13 +17,14 @@ void Capper::initialize(){
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
 
-    stepper1.moveTo(STEPS);                     // Moves the stepper enough to tighten the cap
+    stepper1.move(STEPS+80);                     // Moves the stepper enough to tighten the cap
 
     down = false;                               // Sets both states of motion to false. 
     up = false; 
 }
 
 void Capper::update(){
+    Serial.println("hello");
     if(!down){                          // If the downwards motion is not completed
         dis = stepper1.distanceToGo();  // Gets the distance remaining in the motion 
 
@@ -32,6 +33,7 @@ void Capper::update(){
         }
         else{                           // Completed the downwards motion
             down = true;                // Set the down state to true
+            stepper1.move(-STEPS);
         }
     }
     else if(!up){                       // If the upwards motion is not completed

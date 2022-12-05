@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Subsystems/Capper.h>
 #include <Subsystems/PillDropper.h>
+#include <Subsystems/Rotary.h>
 #include <Async/Subsystem.h>
 
 
@@ -9,45 +10,43 @@
  * 
  * @param subsystems List of subsystems to be run to completion.
  */
-void run(Subsystem subsystems[])
+void run(Subsystem* subsystems[], int len)
 {
-  for(int i = 0; i++; i < sizeof(subsystems))     // Initialize every subsystem that was given
+  for(int i = 0; i < len; i++)     // Initialize every subsystem that was given
   {
-    subsystems[i].initialize();
+    Subsystem* ptr = subsystems[i];
+    ptr->initialize();
   }
 
   bool running = true;                            // Variable to track if all subsystems are running
 
-  while(running){                                 // While subsystems are running
-    running = false;                              // Set running initially to false
-    for(int i = 0; i++; i < sizeof(subsystems))   // Update state of every subsystem
+  while(running){   
+    running = false;                              // While subsystems are running                       
+    for(int i = 0; i < len; i++)                  // Update state of every subsystem
     {
-      subsystems[i].update();
-      if(!subsystems[i].completed && !running){   // If a single subsystem is still running, keep updating all
+      Subsystem* ptr = subsystems[i];
+      ptr->update();
+      if(ptr->completed == false && !running){   // If a single subsystem is still running, keep updating all
         running = true;
       }
     }
   }
 }
 
-
 PillDropper pill_drop;
 Capper cap;
 
-
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(9600);
 }
 
 void loop() {
   // EXAMPLE CODE
 
-  Subsystem first_motion[] = {pill_drop, cap};
-  run(first_motion);
+  Subsystem* first_motion[] = {new Rotary()};
+  run(first_motion, 1);
+  Subsystem* second_motion[] = {new PillDropper(), new Capper()};
+  run(second_motion, 2);
 
-  Subsystem second_motion[] = {pill_drop};
-  run(second_motion);
-
-  Subsystem third_motion[] = {cap};
-  run(third_motion);
+  delay(500);
 }
