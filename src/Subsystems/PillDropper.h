@@ -12,8 +12,8 @@
 #include <Async/Subsystem.h>
 
 #define MOTOR_INTERFACE 1
-#define STEP_PIN 4
-#define DIR_PIN 3
+#define STEP_PIN 6
+#define DIR_PIN 5
 
 class PillDropper: public Subsystem {
     private:
