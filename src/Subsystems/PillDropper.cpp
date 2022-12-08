@@ -11,7 +11,7 @@
 #define STEPPER_ACCEL 50
 #define STEPS 827           // Number of steps the motor will move, positive = clockwise
 
-void PillDropper::initialize(){
+void PillDropper::action(){
     completed = false;                          // Set current state back to false before motion
         
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
