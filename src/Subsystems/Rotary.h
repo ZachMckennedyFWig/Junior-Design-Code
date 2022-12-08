@@ -24,9 +24,9 @@ class Rotary: public Subsystem {
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
     public:
         /**
-         * @brief Function to initialize the Pill Dropper before it completes a cycle of its motion.
+         * @brief Function to action the Pill Dropper before it completes a cycle of its motion.
          */
-        virtual void initialize();
+        virtual void action();
         /**
          * @brief Function to update the position of the Pill Dropper.
          */
