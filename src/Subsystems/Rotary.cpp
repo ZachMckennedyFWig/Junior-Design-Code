@@ -11,7 +11,7 @@
 #define STEPPER_ACCEL 100
 #define STEPS 2000           // Number of steps the motor will move, positive = clockwise
 
-void Rotary::initialize(){
+void Rotary::action(){
     completed = false;                          // Set current state back to false before motion
         
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 

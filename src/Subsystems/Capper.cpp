@@ -1,51 +1,54 @@
-/** 
- * Capper.cpp
- * author: Zach Mckennedy
- * date created: 11/17/2022
+/**
+ * CapDrop.cpp
+ * author: Jensen Gaither
+ * date created: 12/7/2022
  * version: 1.0
 */
 
-#include <Subsystems/Capper.h>
+#include<Arduino.h>
+#include<Subsystems/Capper.h>
 
-#define STEPPER_SPEED 400
-#define STEPPER_ACCEL 500
-#define STEPS 1600          // Number of steps the motor will move, positive = clockwise
+#define INC_TIME_MS 15  // Milli-seconds between servo position changes
+#define MAX_ANGLE 178
+#define MIN_ANGLE 46
 
-void Capper::initialize(){
-    completed = false;                          // Set current state back to false before motion
+void Capper::begin(){
+    myservo.write(MAX_ANGLE); // Set servo to MAX_ANGLE (Full CW)
+    direction = Directions::CCW; // Set direction for first run to CCW
+}
 
-    stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
-    stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
-
-    stepper1.move(STEPS+80);                    // Moves the stepper enough to tighten the cap
-
-    down = false;                               // Sets both states of motion to false. 
-    up = false; 
+void Capper::action(){
+    completed = false;      // Sets the completed state back to false to begin motion
 }
 
 void Capper::update(){
-    if(!down){                          // If the downwards motion is not completed
-        dis = stepper1.distanceToGo();  // Gets the distance remaining in the motion 
+    if(!completed && (millis() - last_change_ms > INC_TIME_MS)){    // If not completed and time for change
+        switch (direction){                                         
+            case Directions::CW:
+                if(target_pos == MAX_ANGLE){                        // If at max angle, mark complete and change direction
+                    direction = Directions::CCW;
+                } 
+                else{                                               // Otherwise, increment angle, write, and save change time
+                    target_pos = target_pos - 1;
+                    myservo.write(target_pos);
+                    last_change_ms = millis();
+                }
+                break;
 
-        if(dis > 0){                    // If there is still distance left in the downward motion
-            stepper1.run();             // Move the motor
-        }
-        else{                           // Completed the downwards motion
-            down = true;                // Set the down state to true
-            stepper1.move(-STEPS);
+            case Directions::CCW:                                   // If at min angle, mark complete and change direction
+                if(target_pos == MIN_ANGLE){
+                    completed = true;
+                    direction = Directions::CW;
+                }
+                else{                                               // Otherwise, decrement angle, write, and save change time
+                    target_pos = target_pos - 1;
+                    myservo.write(target_pos);
+                    last_change_ms = millis();
+                }
+                break;
+        
+            default:
+                break;
         }
     }
-    else if(!up){                       // If the upwards motion is not completed
-        dis = stepper1.distanceToGo();  // Gets the distance remining in the motion
-
-        if(dis < 0){                    // Is there is still disntance left in the upward motion
-            stepper1.run();             // Move the motor
-        }
-        else{                           // Completed the upwards motion
-            up = true;                  // Set the up state to true
-        }
-    }
-    else if(!completed){                // Prevents setting this variable once the motion is complete
-        completed = true;               // Set completed state to true, nothing happens when the motion
-    }                                   //  is done.
 }

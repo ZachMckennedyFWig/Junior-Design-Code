@@ -1,9 +1,12 @@
 #include <Arduino.h>
-#include <Subsystems/Capper.h>
+#include <Subsystems/Closer.h>
 #include <Subsystems/PillDropper.h>
 #include <Subsystems/Rotary.h>
+#include <Subsystems/Capper.h>
 #include <Async/Subsystem.h>
+#include <Servo.h>
 
+#define SERVO_PIN 10
 
 /**
  * @brief Function to run the given list of subsystems asychronously.
@@ -15,7 +18,7 @@ void run(Subsystem* subsystems[], int len)
   for(int i = 0; i < len; i++)     // Initialize every subsystem that was given
   {
     Subsystem* ptr = subsystems[i];
-    ptr->initialize();
+    ptr->action();
   }
 
   bool running = true;                            // Variable to track if all subsystems are running
@@ -33,11 +36,11 @@ void run(Subsystem* subsystems[], int len)
   }
 }
 
-PillDropper pill_drop;
-Capper cap;
+Servo CapperServo;
 
 void setup() {
   Serial.begin(9600);
+  CapperServo.attach(SERVO_PIN);
 }
 
 void loop() {
@@ -45,8 +48,8 @@ void loop() {
 
   Subsystem* first_motion[] = {new Rotary()};
   run(first_motion, 1);
-  Subsystem* second_motion[] = {new PillDropper(), new Capper()};
-  run(second_motion, 2);
+  Subsystem* second_motion[] = {new PillDropper(), new Closer(), new Capper(CapperServo)};
+  run(second_motion, 3);
 
   delay(500);
 }
