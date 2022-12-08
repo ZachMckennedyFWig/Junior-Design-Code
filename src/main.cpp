@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <Subsystems/Capper.h>
+#include <Subsystems/Closer.h>
 #include <Subsystems/PillDropper.h>
 #include <Subsystems/Rotary.h>
 #include <Async/Subsystem.h>
@@ -15,7 +15,7 @@ void run(Subsystem* subsystems[], int len)
   for(int i = 0; i < len; i++)     // Initialize every subsystem that was given
   {
     Subsystem* ptr = subsystems[i];
-    ptr->initialize();
+    ptr->action();
   }
 
   bool running = true;                            // Variable to track if all subsystems are running
@@ -34,7 +34,7 @@ void run(Subsystem* subsystems[], int len)
 }
 
 PillDropper pill_drop;
-Capper cap;
+Closer cap;
 
 void setup() {
   Serial.begin(9600);
@@ -45,7 +45,7 @@ void loop() {
 
   Subsystem* first_motion[] = {new Rotary()};
   run(first_motion, 1);
-  Subsystem* second_motion[] = {new PillDropper(), new Capper()};
+  Subsystem* second_motion[] = {new PillDropper(), new Closer()};
   run(second_motion, 2);
 
   delay(500);

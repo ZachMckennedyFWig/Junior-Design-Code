@@ -12,7 +12,7 @@
  * @brief Class structure layout for each individual subsystem to inherit.
  * 
  * Creates a class with 3 public members, a boolean to tract the completion state of the subsystem,
- *  a virtual void function to initialize the subsystem for motion, and a virtual void function to
+ *  a virtual void function to action the subsystem for motion, and a virtual void function to
  *  update the state of the machine. 
  */
 class Subsystem {
@@ -22,12 +22,12 @@ class Subsystem {
      */
     bool completed;
     /**
-     * @brief Virtual function to initialize the subsystem before it completes a cycle of its motion.
+     * @brief Virtual function to action the subsystem and initiate a cycle (NON-BLOCKING)
      */
-    virtual void initialize();
+    virtual void action();
 
     /**
-     * @brief Virtual function to update the position of the subsystem.
+     * @brief Virtual function to update the subsystem.
      * 
      * This function also has possible error detection and sets the completion state once it has been
      *  fully updated. 
