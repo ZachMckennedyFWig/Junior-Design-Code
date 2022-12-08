@@ -17,14 +17,13 @@ void Capper::initialize(){
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
 
-    stepper1.move(STEPS+80);                     // Moves the stepper enough to tighten the cap
+    stepper1.move(STEPS+80);                    // Moves the stepper enough to tighten the cap
 
     down = false;                               // Sets both states of motion to false. 
     up = false; 
 }
 
 void Capper::update(){
-    Serial.println("hello");
     if(!down){                          // If the downwards motion is not completed
         dis = stepper1.distanceToGo();  // Gets the distance remaining in the motion 
 
