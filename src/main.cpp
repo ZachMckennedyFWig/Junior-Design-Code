@@ -2,8 +2,11 @@
 #include <Subsystems/Closer.h>
 #include <Subsystems/PillDropper.h>
 #include <Subsystems/Rotary.h>
+#include <Subsystems/Capper.h>
 #include <Async/Subsystem.h>
+#include <Servo.h>
 
+#define SERVO_PIN 10
 
 /**
  * @brief Function to run the given list of subsystems asychronously.
@@ -33,11 +36,11 @@ void run(Subsystem* subsystems[], int len)
   }
 }
 
-PillDropper pill_drop;
-Closer cap;
+Servo CapperServo;
 
 void setup() {
   Serial.begin(9600);
+  CapperServo.attach(SERVO_PIN);
 }
 
 void loop() {
@@ -45,8 +48,8 @@ void loop() {
 
   Subsystem* first_motion[] = {new Rotary()};
   run(first_motion, 1);
-  Subsystem* second_motion[] = {new PillDropper(), new Closer()};
-  run(second_motion, 2);
+  Subsystem* second_motion[] = {new PillDropper(), new Closer(), new Capper(CapperServo)};
+  run(second_motion, 3);
 
   delay(500);
 }

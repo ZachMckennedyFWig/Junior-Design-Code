@@ -14,13 +14,22 @@
 class Capper: public Subsystem {
     private:
 
-    Servo myservo; // Servo motor object
+    Servo &myservo; // Servo motor object
+
+    enum Directions {CW, CCW};
+    Directions direction;
 
     int8_t target_pos;
     uint64_t last_change_ms;
 
     public:
 
+    /**
+     * @brief Class constructor
+     * @param s a servo object instance from the parent program
+    */
+    Capper(Servo &s) : myservo(s) {}
+    
     /**
      * @brief Function to initialize the cap dropper at startup
     */

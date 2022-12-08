@@ -21,6 +21,7 @@ class Subsystem {
      * @brief Variable to store the completion state of the subsystem cycle.
      */
     bool completed;
+
     /**
      * @brief Virtual function to action the subsystem and initiate a cycle (NON-BLOCKING)
      */
