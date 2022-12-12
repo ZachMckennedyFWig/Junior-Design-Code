@@ -13,37 +13,29 @@
 
 class Capper: public Subsystem {
     private:
+        Servo &myservo;                 // Servo motor object
 
-    Servo &myservo; // Servo motor object
+        enum Directions {CW, CCW};      // Enumeration to make direction more readable
+        Directions direction;           // Creates instance of the direction enumeration above
 
-    enum Directions {CW, CCW};
-    Directions direction;
-
-    int8_t target_pos;
-    uint64_t last_change_ms;
-
+        int target_pos;                 // Variable to store the current target position of the servo
+        unsigned long last_change_ms;   // Variable to store the millisecond time of the last position update
     public:
+        /**
+         * @brief Class constructor
+         * @param s a servo object instance from the parent program
+        */
+        Capper(Servo &s) : myservo(s) {}
 
-    /**
-     * @brief Class constructor
-     * @param s a servo object instance from the parent program
-    */
-    Capper(Servo &s) : myservo(s) {}
-    
-    /**
-     * @brief Function to initialize the cap dropper at startup
-    */
-    virtual void begin();
+        /** 
+         * @brief Function to action the cap dropper and initiate a cap drop cycle
+        */
+        virtual void action();
 
-    /** 
-     * @brief Function to action the cap dropper and initiate a cap drop cycle
-    */
-    virtual void action();
-
-    /**
-     * @brief Function to update the cap dropper during its cycle
-    */
-    virtual void update();
+        /**
+         * @brief Function to update the cap dropper during its cycle
+        */
+        virtual void update();
 };
 
 #endif

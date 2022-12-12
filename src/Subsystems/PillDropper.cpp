@@ -17,7 +17,7 @@ void PillDropper::action(){
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
 
-    stepper1.move(STEPS);                     // Moves the stepper 1 full rotation
+    stepper1.move(STEPS);                       // Moves the stepper 1 full rotation
 }
 
 void PillDropper::update(){

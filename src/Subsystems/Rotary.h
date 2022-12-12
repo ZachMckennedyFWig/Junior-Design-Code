@@ -23,6 +23,9 @@ class Rotary: public Subsystem {
         //  Third parameter is the direction pin on the arduino  
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
     public:
+        bool backwards;
+        bool forwards;
+        long dis;
         /**
          * @brief Function to action the Pill Dropper before it completes a cycle of its motion.
          */

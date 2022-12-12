@@ -29,27 +29,30 @@ void run(Subsystem* subsystems[], int len)
     {
       Subsystem* ptr = subsystems[i];
       ptr->update();
-      if(ptr->completed == false && !running){   // If a single subsystem is still running, keep updating all
+      if(ptr->completed == false && !running){    // If a single subsystem is still running, keep updating all
         running = true;
       }
     }
   }
 }
 
-Servo CapperServo;
+Servo CapperServo;    // Creates the Servo motor object
 
 void setup() {
-  Serial.begin(9600);
-  CapperServo.attach(SERVO_PIN);
+  Serial.begin(9600);                                   // Begin Serial writing 
+  CapperServo.attach(SERVO_PIN);                        // Initialize the servo
 }
 
+Subsystem* first_motion[] = {new Rotary()};             // First block of subsystems that must be completed (Just rotary table)
+Subsystem* second_motion[] = {new PillDropper(),        // Second block of subssytems that must be completed
+                              new Capper(CapperServo),  //  (Pill dropper, Capper, Closer)
+                              new Closer()};
+int loop_count = 1;                                     // Variable to track the number of cycles the machine has done
+
 void loop() {
-  // EXAMPLE CODE
-
-  Subsystem* first_motion[] = {new Rotary()};
-  run(first_motion, 1);
-  Subsystem* second_motion[] = {new PillDropper(), new Closer(), new Capper(CapperServo)};
-  run(second_motion, 3);
-
-  delay(500);
+  run(first_motion, 1);                                   // Run the first motion, spins the rotary table 1 bottle
+  run(second_motion, loop_count > 6 ? 3 : loop_count/2);  // Run the second motion, dispenses 30 pills, drops 1 cap, closes the cap
+  loop_count++;                                           // Increment the loop count
+  
+  delay(500);                                             // Short delay to let things settle. 
 }

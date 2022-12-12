@@ -10,6 +10,7 @@
 #define STEPPER_SPEED 400
 #define STEPPER_ACCEL 500
 #define STEPS 1600          // Number of steps the motor will move, positive = clockwise
+#define OVERSHOOT 150       // Number of steps the closer should overshoot to make sure each bottle is closed
 
 void Closer::action(){
     completed = false;                          // Set current state back to false before motion
@@ -17,14 +18,13 @@ void Closer::action(){
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
 
-    stepper1.move(STEPS+80);                     // Moves the stepper enough to tighten the cap
+    stepper1.move(STEPS+OVERSHOOT);             // Moves the stepper enough to tighten the cap
 
     down = false;                               // Sets both states of motion to false. 
     up = false; 
 }
 
 void Closer::update(){
-    Serial.println("hello");
     if(!down){                          // If the downwards motion is not completed
         dis = stepper1.distanceToGo();  // Gets the distance remaining in the motion 
 
