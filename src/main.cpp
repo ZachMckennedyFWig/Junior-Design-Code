@@ -29,8 +29,8 @@ void run(Subsystem* subsystems[], int len)
     {
       Subsystem* ptr = subsystems[i];
       ptr->update();
-      if(ptr->completed == false && !running){    // If a single subsystem is still running, keep updating all
-        running = true;
+      if(ptr->completed == false && !running){    // If a single subsystem is still running, keep updating all Subsystems
+        running = true;                               
       }
     }
   }
