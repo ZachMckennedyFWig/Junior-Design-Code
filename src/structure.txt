@@ -1,0 +1,30 @@
+Program Structure Experimentation
+
+Subsystem Rules
+    1. Subsystems must be non-blocking 
+    2. Subsystems have an update method that can be called as much as desired without breaking stuff
+    3. Subsystems have a begin method to initialize them at startup
+    4. Subsystems have an action method to start their action cycle 
+
+Main loop
+    1. Update all subsystems (use the inherited looping method to make it easy)
+
+    2. Handle flags and such that should be delt with no matter the state
+
+    3. Switch Case for states
+        A. Idle
+            If another cycle is due 
+                -> Initiate movement
+                -> Set state to Moving
+        B. Moving
+            If movement complete
+                -> Initiate Action
+                -> Set state to Acting
+        C. Acting
+            If action complete
+                -> Set state to Idle
+        D. Error
+
+Error handling
+    There is a global enum type that contains every error code
+

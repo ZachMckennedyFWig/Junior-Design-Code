@@ -6,50 +6,63 @@
 #include <Async/Subsystem.h>
 #include <Servo.h>
 
+
 #define SERVO_PIN 10
+
+Servo CapperServo;
+Rotary RotaryTable;
+PillDropper PillDispenser;
+Closer CapCloser;
+
 
 /**
  * @brief Function to run the given list of subsystems asychronously.
  * 
  * @param subsystems List of subsystems to be run to completion.
  */
-void run(Subsystem* subsystems[], int len)
+void run(Subsystem subsystems[10], int len)
 {
-  for(int i = 0; i < len; i++)     // Initialize every subsystem that was given
+  for(int i = 0; i < len; i++){     // Initialize every subsystem that was given
+    subsystems[i].action();
+  }
+}
+
+bool update(Subsystem* subsystems[], int len)
+{
+  for(int i = 0; i < len; i++)                  // Update state of every subsystem
   {
     Subsystem* ptr = subsystems[i];
-    ptr->action();
+    ptr->update();
   }
+}
 
-  bool running = true;                            // Variable to track if all subsystems are running
-
-  while(running){   
-    running = false;                              // While subsystems are running                       
-    for(int i = 0; i < len; i++)                  // Update state of every subsystem
-    {
-      Subsystem* ptr = subsystems[i];
-      ptr->update();
-      if(ptr->completed == false && !running){   // If a single subsystem is still running, keep updating all
-        running = true;
-      }
+bool check_complete(Subsystem* subsystems[], int len)
+{
+  for(int i = 0; i < len; i++) {                 
+    Subsystem* ptr = subsystems[i];
+    if(ptr->completed == false) {
+      return false;
+    }
+    else{
+      return true;
     }
   }
 }
 
-Servo CapperServo;
-
 void setup() {
   Serial.begin(9600);
-  CapperServo.attach(SERVO_PIN);
 }
 
 void loop() {
   // EXAMPLE CODE
+  Subsystem *sub;
+  Rotary rot;
+  sub = &rot;
+  
+  sub->action();
 
-  Subsystem* first_motion[] = {new Rotary()};
-  run(first_motion, 1);
-  Subsystem* second_motion[] = {new PillDropper(), new Closer(), new Capper(CapperServo)};
-  run(second_motion, 3);
+  //Subsystem*Subsystem run_list[] = {};
+  //run(run_list,1);
 
   delay(500);
 }
