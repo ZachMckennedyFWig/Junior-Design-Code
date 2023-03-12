@@ -17,23 +17,34 @@
  */
 class Subsystem {
     public:
+    
     /**
-     * @brief Variable to store the completion state of the subsystem cycle.
+     * @brief Method that runs once during startup and can be used to set things up
+     * @returns True on success
+    */
+    virtual bool init() = 0;
+    
+    /**
+     * @brief Method to evaluate the completion state of the subsystem cycle. (Every child must implement the completed variable)
+     * @returns The completion state of the subsystem: True -> Complete, False -> Still Running
      */
-    bool completed;
+    virtual bool isComplete() = 0;
 
     /**
-     * @brief Virtual function to action the subsystem and initiate a cycle (NON-BLOCKING)
+     * @brief Pure virtual function to trigger the subsystem and initiate a cycle (NON-BLOCKING)
+     * @returns Nothing
      */
-    virtual void action();
+    virtual void trigger() = 0;
 
     /**
-     * @brief Virtual function to update the subsystem.
+     * @brief Virtual function to update the subsystem (NON-BLOCKING). This method is safe to call at any time and will not result
+     * in a cycle unless the subsystem has been previously triggered.
      * 
-     * This function also has possible error detection and sets the completion state once it has been
-     *  fully updated. 
+     * Things that might happen: stepper updates, sensor checks, error detection  
+     * 
+     * @returns Nothing
      */
-    virtual void update();
+    virtual void update() = 0;
 };
 
 #endif

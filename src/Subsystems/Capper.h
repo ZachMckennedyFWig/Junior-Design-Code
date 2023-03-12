@@ -1,20 +1,29 @@
 /**
- * CapDrop.h
+ * Capper.h
  * author: Jensen Gaither
- * date created: 12/7/2022
- * version: 1.0
+ * date created: 3/12/2023
+ * version: 2.0
 */
 
 #ifndef CAPPER_H
 #define CAPPER_H
 
+#include <Arduino.h>
 #include <Servo.h>
 #include <Async/Subsystem.h>
+
+#define INC_TIME_MS 15  // Milli-seconds between servo position changes
+#define MAX_ANGLE 178 // Servo Max Angle
+#define MIN_ANGLE 46 // Servo Min Angle
+
+#define SERVO_PIN 10 // Pin Servo is connected to
 
 class Capper: public Subsystem {
     private:
 
-    Servo &myservo; // Servo motor object
+    bool completed;
+
+    Servo myservo; // Servo motor object
 
     enum Directions {CW, CCW};
     Directions direction;
@@ -23,27 +32,32 @@ class Capper: public Subsystem {
     uint64_t last_change_ms;
 
     public:
-
     /**
      * @brief Class constructor
-     * @param s a servo object instance from the parent program
     */
-    Capper(Servo &s) : myservo(s) {}
+    Capper() {}
     
     /**
-     * @brief Function to initialize the cap dropper at startup
+     * @brief Method to initialize the cap dropper at startup
     */
-    virtual void begin();
+    bool init() override;
 
     /** 
-     * @brief Function to action the cap dropper and initiate a cap drop cycle
+     * @brief Method to trigger the cap dropper and initiate a cap drop cycle
     */
-    virtual void action();
+    void trigger() override;
 
     /**
-     * @brief Function to update the cap dropper during its cycle
+     * @brief Method to update the cap dropper
     */
-    virtual void update();
+    void update() override;
+
+    /**
+     * @brief Method to check the state of the capper subsystem
+     * @return True -> op finished, False -> subsytem still running
+    */
+    bool isComplete() override;
+
 };
 
 #endif

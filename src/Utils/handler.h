@@ -13,10 +13,13 @@ public:
     void update(Subsystems&... subsystems);
 
     template<typename... Subsystems>
-    bool ops_complete(Subsystems&... subsystems);
+    bool isComplete(Subsystems&... subsystems);
 
     template<typename... Subsystems>
-    void activate(Subsystems&... subsystems);
+    void trigger(Subsystems&... subsystems);
+
+    template<typename... Subsystems>
+    bool init(Subsystems&... subsystems);
 };
 
 SubsysHandler::SubsysHandler(){}
@@ -32,15 +35,23 @@ void SubsysHandler::update(Subsystems&... subsystems) {
 
 // Define a variadic template function that takes any number of subsystem objects and updates them
 template<typename... Subsystems>
-bool SubsysHandler::ops_complete(Subsystems&... subsystems) {
+bool SubsysHandler::isComplete(Subsystems&... subsystems) {
   // Use a fold expression to execute the update method on each subsystem
-  return (subsystems.completed && ...);
+  return (subsystems.isComplete() && ...);
 }
 
 template<typename... Subsystems>
-void SubsysHandler::activate(Subsystems&... subsystems) {
+void SubsysHandler::trigger(Subsystems&... subsystems) {
   // Use a fold expression to execute the update method on each subsystem
-  (subsystems.action(), ...);
+  (subsystems.trigger(), ...);
 }
+
+// Define a variadic template function that takes any number of subsystem objects and updates them
+template<typename... Subsystems>
+bool SubsysHandler::init(Subsystems&... subsystems) {
+  // Use a fold expression to execute the update method on each subsystem
+  return (subsystems.init() && ...);
+}
+
 
 #endif

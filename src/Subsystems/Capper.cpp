@@ -1,24 +1,24 @@
 /**
- * CapDrop.cpp
+ * Capper.cpp
  * author: Jensen Gaither
- * date created: 12/7/2022
- * version: 1.0
+ * date created: 3/12/2023
+ * version: 2.0
 */
 
-#include<Arduino.h>
 #include<Subsystems/Capper.h>
 
-#define INC_TIME_MS 15  // Milli-seconds between servo position changes
-#define MAX_ANGLE 178
-#define MIN_ANGLE 46
-
-void Capper::begin(){
+bool Capper::init(){
+    myservo.attach(SERVO_PIN);
+    delay(15);
     myservo.write(MAX_ANGLE); // Set servo to MAX_ANGLE (Full CW)
     direction = Directions::CCW; // Set direction for first run to CCW
+    completed = true;
+    return true;
 }
 
-void Capper::action(){
+void Capper::trigger(){
     completed = false;      // Sets the completed state back to false to begin motion
+    last_change_ms = millis() - INC_TIME_MS; // Record start time to avoid overflow issues
 }
 
 void Capper::update(){
@@ -51,4 +51,8 @@ void Capper::update(){
                 break;
         }
     }
+}
+
+bool Capper::isComplete() {
+    return completed;
 }
