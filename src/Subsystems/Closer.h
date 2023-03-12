@@ -1,8 +1,8 @@
 /** 
  * Closer.h
- * author: Zach Mckennedy
- * date created: 11/17/2022
- * version: 1.0
+ * author: Jensen Gaither
+ * date created: 3/12/2023
+ * version: 2.0
 */
 
 #ifndef CLOSER_H
@@ -15,9 +15,14 @@
 #define STEP_PIN 8
 #define DIR_PIN 7
 
+#define STEPPER_SPEED 400
+#define STEPPER_ACCEL 500
+#define STEPS 1600          // Number of steps the motor will move, positive = clockwise
+#define OVERTIGHTEN 80      // Number of steps to overtighten
+
 class Closer: public Subsystem {
     private:
-    // Stepper motor connection
+    //  Stepper motor connection
     //  First parameter is motor interface type, which is always 1 for motor drivers
     //  Second parameter is the stepping pin on the arduino
     //  Third parameter is the direction pin on the arduino  
@@ -27,15 +32,29 @@ class Closer: public Subsystem {
     bool up;        // Stores the state of the upward motion of the closer
     long dis;       // Stores the distance left the motor has to travel
 
+    bool completed; // Stores the completion state
+
     public:
     /**
-     * @brief Function to action the Closer and initiate a cycle of its motion.
-     */
-    virtual void action();
+     * @brief method to initialize the closer at startup
+     * @returns true on success
+    */
+    bool init() override;
+
     /**
-     * @brief Function to update the Closer during its cycle
+     * @brief method to trigger the Closer and initiate a cycle of its motion
      */
-    virtual void update();
+    void trigger() override;
+
+    /**
+     * @brief method to update the Closer during its cycle
+     */
+    void update() override;
+
+    /**
+     * @brief method to check if the closer is finished
+    */
+    bool isComplete() override;
 };
 
 #endif

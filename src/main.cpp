@@ -5,25 +5,23 @@
 #include <Subsystems/Capper.h>
 #include <Async/Subsystem.h>
 #include <Servo.h>
-#include <Utils/handler.h>
+#include <Utils/handler_recurse.h>
 
-#define SERVO_PIN 10
-
-Servo CapperServo;
-Rotary ObjRotTable;
-PillDropper ObjPillDisp;
-Closer ObjCapClose;
+Rotary RotaryTable;
+PillDropper PillDisp;
+Closer CapCloser;
+Capper CapCapper;
 
 SubsysHandler myHandler;
 
-
 void setup() {
   Serial.begin(9600);
+  myHandler.init(RotaryTable,PillDisp,CapCloser,CapCapper);
 }
 
 void loop() {
 
-  myHandler.update(ObjCapClose, ObjPillDisp, ObjRotTable);
+  myHandler.update(RotaryTable, PillDisp, CapCloser, CapCapper);
 
   delay(500);
 }

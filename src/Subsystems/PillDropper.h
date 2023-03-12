@@ -15,6 +15,11 @@
 #define STEP_PIN 6
 #define DIR_PIN 5
 
+#define STEPPER_SPEED 200
+#define STEPPER_ACCEL 50
+#define STEPS 827           // Number of steps the motor will move, positive = clockwise
+
+
 class PillDropper: public Subsystem {
     private:
         // Stepper motor connection
@@ -22,15 +27,30 @@ class PillDropper: public Subsystem {
         //  Second parameter is the stepping pin on the arduino
         //  Third parameter is the direction pin on the arduino  
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
+
+        bool completed;
     public:
         /**
-         * @brief Function to action the Pill Dropper before it completes a cycle of its motion.
+        * @brief method to initialize the pill dropper at startup
+        * @returns true on success
+        */
+        bool init() override;
+
+        /**
+         * @brief Function to trigger the Pill Dropper and initiate a cycle of its motion
          */
-        virtual void action();
+        void trigger() override;
+
         /**
          * @brief Function to update the position of the Pill Dropper.
          */
-        virtual void update();
+        void update() override;
+
+        /**
+        * @brief method to check if the pill dropper is finished
+        * @return true if completed
+        */
+        bool isComplete() override;
 };
 
 #endif

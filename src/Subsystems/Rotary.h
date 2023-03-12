@@ -1,8 +1,8 @@
 /** 
  * PillDropper.h
  * author: Zach Mckennedy
- * date created: 12/02/2022
- * version: 1.0
+ * date created: 3/12/2023
+ * version: 2.0
 */
 
 #ifndef ROTARY_H
@@ -15,6 +15,10 @@
 #define STEP_PIN 4
 #define DIR_PIN 3
 
+#define STEPPER_SPEED 500
+#define STEPPER_ACCEL 100
+#define STEPS 2000           // Number of steps the motor will move, positive = clockwise
+
 class Rotary: public Subsystem {
     private:
         // Stepper motor connection
@@ -22,15 +26,30 @@ class Rotary: public Subsystem {
         //  Second parameter is the stepping pin on the arduino
         //  Third parameter is the direction pin on the arduino  
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
+
+        bool completed;
     public:
         /**
-         * @brief Function to action the Pill Dropper before it completes a cycle of its motion.
-         */
-        virtual void action();
+         * @brief method to initalize the rotary table at boot
+        */
+        bool init() override;
+
         /**
-         * @brief Function to update the position of the Pill Dropper.
+         * @brief method to action the rotary table and initiate a cycle of its motion
+         * 
          */
-        virtual void update();
+        void trigger() override;
+
+        /**
+         * @brief method to update the position of the rotary table.
+         */
+        void update()override;
+
+        /**
+         * @brief method to check the status of the rotary tabel
+         * @return true if motion is finished
+        */
+        bool isComplete() override;
 };
 
 #endif

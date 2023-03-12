@@ -1,27 +1,60 @@
-Program Structure Experimentation
+Machine Program Structure
 
 Subsystem Rules
-    1. Subsystems must be non-blocking 
+    1. Subsystems methods must be non-blocking 
     2. Subsystems have an update method that can be called as much as desired without breaking stuff
-    3. Subsystems have a begin method to initialize them at startup
-    4. Subsystems have an action method to start their action cycle 
+    3. Subsystems have an init method to initialize them at startup
+    4. Subsystems have a trigger method to start their motion cycle 
+    5. Subsystems have a isComplete method to check if they are finished with their cycle
+
+Overall System states
+1. Boot - The machine has just been booted and it is in an indeterminate state
+2. Idle - The machine is in a determinate state but is not Moving or Processing
+3. Moving - The rotary table is moving the bottles to the next index position
+4. Processing - The machine is preforming operations (Fill, Cap, Close)
+5. Error - A critical error has been encountered that needs to be resolved
+
+There is a ProductionManager class which takes care of deciding how and when to run the machine to yeild the desired
+number of bottles. The ProductionManager implements the following:
+    A. getCyclesRemaining - returns the number of cycles remaining (an integer > 0 for finite cycles or -1 for infinite cycles)
+    B. flagCycleComplete - used to let the ProductionManager know that a cycle has completed
+
+    C. getBottleMap -  returns a char showing (in binary) which of the 8 stations currently have bottles
+        -> Ex. 0b00000001 for bottle at bottle chute and nothing else
+        -> Subsystems use this method to determine whether they have a bottle to do stuff to 
+        -> (getBottleMap() & 00000100) to check if pill dispenser has a bottle
+    D. MAYBE NOT NEEDED Private method: advanceBottleMap - advances the bottle map and "moves" all the bottles along the array
+    E. setBottleMap - Allows for setting a new bottle map (At start up for example)
+
+    F. getBottlesRemaining - gets how many bottles are still going to come out of the machine (an integer > 0 or -1 for infinite)
+    G. setBottleNum - sets the desired number of bottles to be spit out by the machine after startProduction (absolute number)
+        -> If the number is changed while Production is happening, the machine will not update to the new number until the 
+           production has stopped and a new production run is started
+
+    H. startProduction - starts the machine (The machine will run until it has spat out the desired number of bottles) 
+    I. stopProduction - stops the machine (The machine will finish the current cycle but will not advance to the next bottle)
+
+    Every subsystem will recieve a reference to the main instance of this class so that it can access getBottleMap()
+    in order to decide whether to run during the comming cycle
+
 
 Main loop
-    1. Update all subsystems (use the inherited looping method to make it easy)
+    1. Update all subsystems and modules (use the inherited looping method to make it easy)
+        -> Including buttons and things that might initiate a cycle
 
-    2. Handle flags and such that should be delt with no matter the state
+    2. Handle flags and such that should be delt with no matter the state (Things like the state being boot)
 
     3. Switch Case for states
         A. Idle
-            If another cycle is due 
-                -> Initiate movement
+            If there are still cycles remaining 
+                -> Initiate movement of rotary table
                 -> Set state to Moving
         B. Moving
             If movement complete
                 -> Initiate Action
-                -> Set state to Acting
-        C. Acting
-            If action complete
+                -> Set state to Processing
+        C. Processing
+            If processes complete
                 -> Set state to Idle
         D. Error
 
