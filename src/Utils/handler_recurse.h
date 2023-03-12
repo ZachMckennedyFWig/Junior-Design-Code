@@ -88,7 +88,7 @@ void SubsysHandler::trigger(First& first_sub, Subsystem&... subsystems) {
   trigger(subsystems...);
 }
 
-bool SubsysHandler::init() {}
+bool SubsysHandler::init() {return true;}
 
 template<typename Subsystem>
 bool SubsysHandler::init(Subsystem& subsystem) {

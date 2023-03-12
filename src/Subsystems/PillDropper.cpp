@@ -23,11 +23,13 @@ void PillDropper::trigger(){
 
 void PillDropper::update(){
     if(!completed)
+    {
         stepper1.run();
         if(stepper1.distanceToGo() == 0){    // If the motion is complete
             completed = true;                // set completed flag to true
         }
     }
+}
 
 bool PillDropper::isComplete() {
     return completed;
