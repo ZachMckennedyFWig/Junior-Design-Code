@@ -1,9 +1,9 @@
 #include "Utils/ProductionManager.h"
 
 ProductionManager::ProductionManager(int arg_num_bottles, unsigned char arg_default_bottle_map) : num_bottles(arg_num_bottles), 
-                                                                                                  bottle_map(arg_default_bottle_map), 
                                                                                                   num_bottles_remaining(0), 
-                                                                                                  cycles_remaining(0) {
+                                                                                                  cycles_remaining(0),
+                                                                                                  bottle_map(arg_default_bottle_map) {
 
 }
 
@@ -24,7 +24,7 @@ int ProductionManager::getCyclesRemaining() {
     return cycles_remaining;
 }
 
-void ProductionManager::flagCycleComplete(bool new_bottle_incoming = true) {
+void ProductionManager::flagCycleComplete(bool new_bottle_incoming) {
     advanceBottleMap(new_bottle_incoming);
 
     // If there was not a bottle in position 8 but now there is, decrement the bottles remaining counter
@@ -74,7 +74,7 @@ void ProductionManager::startProduction() {
     }
 }
 
-void ProductionManager::advanceBottleMap(bool with_new_bottle = true) {
+void ProductionManager::advanceBottleMap(bool with_new_bottle) {
     if(with_new_bottle) {
         bottle_map = bottle_map >> 1 | 0b10000000;
     }
