@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include <Async/Subsystem.h>
+#include <Utils/ProductionManager.h>
 
 #define INC_TIME_MS 15  // Milli-seconds between servo position changes
 #define MAX_ANGLE 178 // Servo Max Angle
@@ -18,12 +19,13 @@
 
 #define SERVO_PIN 10 // Pin Servo is connected to
 
+#define CAPPER_MAP_POS 0b00001000; // Capper is in the fifth position
+
 class Capper: public Subsystem {
     private:
 
-    bool completed;
-
     Servo myservo; // Servo motor object
+    ProductionManager* ProdManager;
 
     enum Directions {CW, CCW};
     Directions direction;
@@ -31,11 +33,13 @@ class Capper: public Subsystem {
     int8_t target_pos;
     uint64_t last_change_ms;
 
+    bool completed;
+
     public:
     /**
      * @brief Class constructor
     */
-    Capper() {}
+    Capper(ProductionManager* arg_ProdManager) : ProdManager(arg_ProdManager){}
     
     /**
      * @brief Method to initialize the cap dropper at startup

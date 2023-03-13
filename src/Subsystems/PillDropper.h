@@ -10,6 +10,7 @@
 
 #include <AccelStepper.h>
 #include <Async/Subsystem.h>
+#include "Utils/ProductionManager.h"
 
 #define MOTOR_INTERFACE 1
 #define STEP_PIN 6
@@ -19,6 +20,7 @@
 #define STEPPER_ACCEL 50
 #define STEPS 827           // Number of steps the motor will move, positive = clockwise
 
+#define PILL_MAP_POS 0b00100000 // Pill dropper is in the third position
 
 class PillDropper: public Subsystem {
     private:
@@ -27,9 +29,16 @@ class PillDropper: public Subsystem {
         //  Second parameter is the stepping pin on the arduino
         //  Third parameter is the direction pin on the arduino  
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
+        ProductionManager* ProdManager;
 
         bool completed;
+
     public:
+        /**
+        * @brief Class constructor
+        */
+        PillDropper(ProductionManager* arg_ProdManager) : ProdManager(arg_ProdManager){}
+
         /**
         * @brief method to initialize the pill dropper at startup
         * @returns true on success
