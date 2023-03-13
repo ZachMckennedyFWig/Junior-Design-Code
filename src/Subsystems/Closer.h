@@ -10,6 +10,7 @@
 
 #include <AccelStepper.h>
 #include <Async/Subsystem.h>
+#include "Utils/ProductionManager.h"
 
 #define MOTOR_INTERFACE 1
 #define STEP_PIN 8
@@ -20,6 +21,8 @@
 #define STEPS 1600          // Number of steps the motor will move, positive = clockwise
 #define OVERTIGHTEN 80      // Number of steps to overtighten
 
+#define CLOSER_MAP_POS 0b00000010 // Closer is in 7th position
+
 class Closer: public Subsystem {
     private:
     //  Stepper motor connection
@@ -27,6 +30,7 @@ class Closer: public Subsystem {
     //  Second parameter is the stepping pin on the arduino
     //  Third parameter is the direction pin on the arduino  
     AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
+    ProductionManager* ProdManager;
 
     bool down;      // Stores the state of the downward motion of the closer 
     bool up;        // Stores the state of the upward motion of the closer
@@ -35,6 +39,11 @@ class Closer: public Subsystem {
     bool completed; // Stores the completion state
 
     public:
+    /**
+     * @brief Class constructor
+    */
+    Closer(ProductionManager* arg_ProdManager) : ProdManager(arg_ProdManager){}
+
     /**
      * @brief method to initialize the closer at startup
      * @returns true on success

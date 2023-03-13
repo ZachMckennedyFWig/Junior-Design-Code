@@ -7,10 +7,15 @@
 #include <Servo.h>
 #include <Utils/handler_recurse.h>
 
+#define NUM_BOTTLES 12
+#define BOTTLE_MAP 0b10000000
+
+ProductionManager ProdManager(NUM_BOTTLES, BOTTLE_MAP);
+
 Rotary RotaryTable;
-PillDropper PillDisp;
-Closer CapCloser;
-Capper CapCapper;
+PillDropper PillDisp(&ProdManager);
+Closer CapCloser(&ProdManager);
+Capper CapCapper(&ProdManager);
 
 SubsysHandler myHandler;
 
