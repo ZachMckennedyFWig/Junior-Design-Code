@@ -8,9 +8,10 @@
 #include <Utils/handler_recurse.h>
 
 #define NUM_BOTTLES 12
-#define BOTTLE_MAP 0b10000000
 
-ProductionManager ProdManager(NUM_BOTTLES, BOTTLE_MAP);
+bool bottle_map[8] = {1,0,0,0,0,0,0,0};
+
+ProductionManager ProdManager(NUM_BOTTLES, bottle_map);
 
 Rotary RotaryTable;
 PillDropper PillDisp(&ProdManager);
