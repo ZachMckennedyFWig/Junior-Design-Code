@@ -1,6 +1,8 @@
 #ifndef PRODUCTION_MANAGER_H
 #define PRODUCTION_MANAGER_H
 
+#define NUM_BOTTLE_SLOTS 8
+
 class ProductionManager
 {
 private:
@@ -9,8 +11,8 @@ private:
     int cycles_remaining;
 
     /**
-     * bottle_map is an unsigned char whose bits corresponde to the presense of a bottle at each of the 8 positions around the machine
-     * The stations are represented using the binary bits starting with the bottle handler at the MOST signifigant bit
+     * bottle_map is an 8 index booleen array whose contents correspond to the presense of a bottle at each of the 8 positions around the machine
+     * The stations are represented using the array positions starting with the bottle handler at index 0
      * 
      * ============ Station Map ============
      *          (As seen from top)
@@ -21,12 +23,12 @@ private:
      *   Bottle ---> 1      7 <--- Closer
      *                  8
      * 
-     * binary Representation: 0b 0 0 0 0 0 0 0 0
-     *              Stations:    1 2 3 4 5 6 7 8
+     * Array Index: 0 1 2 3 4 5 6 7 
+     *    Stations: 1 2 3 4 5 6 7 8
      *
-     * Ex: Bottles at the bottle handler and the pill filler would be 0b10100000
+     * Ex: Bottles at the bottle handler and the pill filler would be [1,0,1,0,0,0,0,0]
     */
-    unsigned char bottle_map; 
+    bool bottle_map[8]; 
 
     /**
      * @brief method to advance the bottle map
@@ -43,7 +45,7 @@ public:
     /**
      * @brief Class constructor
     */ 
-    ProductionManager(int arg_num_bottles, unsigned char arg_default_bottle_map);
+    ProductionManager(int arg_num_bottles, bool bot_map[NUM_BOTTLE_SLOTS]);
 
     /**
      * @brief Class destructor
@@ -65,15 +67,17 @@ public:
 
     /**
      * @brief Method to get a the current bottle_map
-     * @return unsigned char containing bottle map
+     * @param position what position you would like to recieve info about (1 to 8)
+     * @return int containing status of the bottle map at that positon
     */ 
-    unsigned char getBottleMap();
+    int getBottleMap(int position);
 
     /**
      * @brief Method to set a new Bottle map (At startup for example)
+     * @param new_bottle_map an 8 element bool array of the desired bottle map
      * @return Nothing
     */ 
-    void setBottleMap(unsigned char new_bottle_map);
+    void setBottleMap(bool new_bottle_map[8]);
 
     /**
      * @brief method get the remaining number of bottles in this production cycle

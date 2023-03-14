@@ -1,9 +1,16 @@
 #include "Utils/ProductionManager.h"
 
-ProductionManager::ProductionManager(int arg_num_bottles, unsigned char arg_default_bottle_map) : num_bottles(arg_num_bottles), 
-                                                                                                  num_bottles_remaining(0), 
-                                                                                                  cycles_remaining(0),
-                                                                                                  bottle_map(arg_default_bottle_map) {
+ProductionManager::ProductionManager(int arg_num_bottles, bool bot_map[NUM_BOTTLE_SLOTS]) : num_bottles(arg_num_bottles), 
+                                                                                            num_bottles_remaining(0), 
+                                                                                            cycles_remaining(0),
+                                                                                            bottle_map{ bot_map[0],
+                                                                                                        bot_map[1],
+                                                                                                        bot_map[2],
+                                                                                                        bot_map[3],
+                                                                                                        bot_map[4],
+                                                                                                        bot_map[5],
+                                                                                                        bot_map[6],
+                                                                                                        bot_map[7]} {
 
 }
 
@@ -31,7 +38,7 @@ void ProductionManager::flagCycleComplete(bool new_bottle_incoming) {
     // If there was a bottle in position 8 and there still is a bottle in position 8, decrement the remainder counter
     // If there is no bottle in position 8 do not decrement the remaining counter
     // TLDR: If there is a bottle in position 8 and there are still bottles to be done, decrement the remaining bottle counter
-    if(num_bottles_remaining > 0 && (bottle_map & 0b00000001)) {
+    if(num_bottles_remaining > 0 && getBottleMap(8)) {
         num_bottles_remaining--;
     }
 
@@ -40,13 +47,14 @@ void ProductionManager::flagCycleComplete(bool new_bottle_incoming) {
         cycles_remaining--;
     }
 }
-
-unsigned char ProductionManager::getBottleMap() {
-    return bottle_map;
+int ProductionManager::getBottleMap(int position) {
+    return bottle_map[position-1];
 }
 
-void ProductionManager::setBottleMap(unsigned char new_bottle_map) {
-    bottle_map = new_bottle_map;
+void ProductionManager::setBottleMap(bool new_bottle_map[8]) {
+    for(int i = 0; i < NUM_BOTTLE_SLOTS; i++ ) {
+        bottle_map[i] = new_bottle_map[i];
+    }
 }
 
 int ProductionManager::getBottlesRemaining() {
@@ -75,31 +83,27 @@ void ProductionManager::startProduction() {
 }
 
 void ProductionManager::advanceBottleMap(bool with_new_bottle) {
+    // For each slot in the array take slot - 1 and put it in slot
+    // do this until slot 2
+    // If new bottle, insert 1 in slot 1(arr0), else insert 0
+    for(int i = NUM_BOTTLE_SLOTS-1; i > 0; i--) {
+        bottle_map[i] = bottle_map[i-1];
+    }
     if(with_new_bottle) {
-        bottle_map = bottle_map >> 1 | 0b10000000;
+        bottle_map[0] = 1;
     }
     else {
-        bottle_map = bottle_map >> 1;
+        bottle_map[0] = 0;
     }
 }
 
 int ProductionManager::emptySlots() {
     int count = 0;  // Initialise count variable
-    unsigned char temp = bottle_map;    // create copy of bottle_map
-    int i = 8;  // create iterator with starting value of 8
- 
-    // Iterate through all the bits
-    while (i > 0) {
-        // If current bit is 0
-        if (~temp & 1) {
+    
+    for(int i = 0; i < NUM_BOTTLE_SLOTS; i++) {
+        if(!bottle_map[i]){
             count++;
         }
-
-        // Shift the bits
-        temp = temp >> 1;
-        
-        // Decrement the counter
-        i--;
     }
 
     return count;
