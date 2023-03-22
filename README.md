@@ -1,2 +1,6 @@
 # Junior-Design-Code
-Code for Group 14 Junior Design Project
+The firmware for Team 14's Arduino based monoblock pill bottle filling machine
+
+All code lives in the src folder
+
+Compiled using PlatformIO
