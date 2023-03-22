@@ -62,7 +62,7 @@ public:
     /**
      * @brief Method to let the manager know that a cycle has completed
      * @param new_bottle_incoming whether a new bottle will be coming into a rotary table from the bottle handler
-     * @return Nothing
+     * @return Nothing but the wind
     */  
     void flagCycleComplete(bool new_bottle_incoming = true);
 
