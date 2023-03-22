@@ -1,2 +1,4 @@
 # Junior-Design-Code
-Code for Group 14 Junior Design Project
+Full Machine Code for group 14 
+
+All code can be found in src
