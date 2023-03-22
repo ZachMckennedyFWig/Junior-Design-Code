@@ -17,8 +17,10 @@ bool PillDropper::init() {
 }
 
 void PillDropper::trigger(){
-    completed = false;                          // Set current state back to false before motion
-    stepper1.move(STEPS);                     // Moves the stepper 1 full rotation
+    if(ProdManager->getBottleMap(PILL_MAP_POS)) {
+        completed = false;                          // Set current state back to false before motion
+        stepper1.move(STEPS);                     // Moves the stepper 1 full rotation
+    }
 }
 
 void PillDropper::update(){

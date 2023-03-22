@@ -17,8 +17,11 @@ bool Capper::init(){
 }
 
 void Capper::trigger(){
-    completed = false;      // Sets the completed state back to false to begin motion
-    last_change_ms = millis() - INC_TIME_MS; // Record start time to avoid overflow issues
+    // If there is a bottle under the capper, trigger the cycle
+    if(ProdManager->getBottleMap(CAPPER_MAP_POS)) {
+        completed = false;      // Sets the completed state back to false to begin motion
+        last_change_ms = millis() - INC_TIME_MS; // Record start time to avoid overflow issues
+    } 
 }
 
 void Capper::update(){

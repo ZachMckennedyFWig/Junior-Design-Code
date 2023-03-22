@@ -36,8 +36,8 @@ void ProductionManager::flagCycleComplete(bool new_bottle_incoming) {
         cycles_remaining--;
     }
 }
-int ProductionManager::getBottleMap(int position) {
-    return bottle_map[position-1];
+bool ProductionManager::getBottleMap(int position) {
+    return bottle_map[position-1]; // pos - 1 to make indexing line up (0 to 7 vs 1 to 8)
 }
 
 void ProductionManager::setBottleMap(bool new_bottle_map[8]) {

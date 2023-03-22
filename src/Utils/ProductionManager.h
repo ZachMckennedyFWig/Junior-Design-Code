@@ -69,9 +69,9 @@ public:
     /**
      * @brief Method to get a the current bottle_map
      * @param position what position you would like to recieve info about (1 to 8)
-     * @return int containing status of the bottle map at that positon
+     * @return bool containing status of the bottle map at that positon
     */ 
-    int getBottleMap(int position);
+    bool getBottleMap(int position);
 
     /**
      * @brief Method to set a new Bottle map (At startup for example)

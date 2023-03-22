@@ -20,7 +20,7 @@
 #define STEPPER_ACCEL 50
 #define STEPS 827           // Number of steps the motor will move, positive = clockwise
 
-#define PILL_MAP_POS 0b00100000 // Pill dropper is in the third position
+#define PILL_MAP_POS 3 // Pill dropper is in the third position
 
 class PillDropper: public Subsystem {
     private:
