@@ -16,17 +16,6 @@ ProductionManager::ProductionManager(int arg_num_bottles, bool bot_map[NUM_BOTTL
 
 ProductionManager::~ProductionManager() {}
 
-/*
-int getCyclesRemaining();
-void flagCycleComplete();
-unsigned char getBottleMap();
-void setBottleMap(unsigned char new_bottle_map);
-int getBottlesRemaining();
-void setBottleNum(int arg_num_bottles);
-void startProduction();
-void startProduction();
-*/
-
 int ProductionManager::getCyclesRemaining() {
     return cycles_remaining;
 }
