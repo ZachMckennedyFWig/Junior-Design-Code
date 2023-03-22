@@ -1,5 +1,8 @@
 Machine Program Structure
 
+A "Machine Cycle" begins with a cycle of Dispense-Cap-Close operations, followed by a rotary table movement
+--> This means that at boot, the bottle map should be configured to match the bottles in the table (after initial homing)
+
 Subsystem Rules
     1. Subsystems methods must be non-blocking 
     2. Subsystems have an update method that can be called as much as desired without breaking stuff

@@ -19,7 +19,7 @@
 
 #define SERVO_PIN 10 // Pin Servo is connected to
 
-#define CAPPER_MAP_POS 0b00001000; // Capper is in the fifth position
+#define CAPPER_MAP_POS 5 // Capper is in the fifth position
 
 class Capper: public Subsystem {
     private:

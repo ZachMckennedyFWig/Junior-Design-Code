@@ -17,12 +17,15 @@ bool Closer::init(){
 }
 
 void Closer::trigger(){
-    completed = false;                          // Set current state back to false before motion
+    // If there is a bottle under the closer, run the closer
+    if(ProdManager->getBottleMap(CLOSER_MAP_POS)) {
+        completed = false;                          // Set current state back to false before motion
 
-    stepper1.move(STEPS+OVERTIGHTEN);                     // Moves the stepper enough to tighten the cap
+        stepper1.move(STEPS+OVERTIGHTEN);                     // Moves the stepper enough to tighten the cap
 
-    down = false;                               // Sets both states of motion to false. 
-    up = false; 
+        down = false;                               // Sets both states of motion to false. 
+        up = false;
+    }
 }
 
 void Closer::update(){

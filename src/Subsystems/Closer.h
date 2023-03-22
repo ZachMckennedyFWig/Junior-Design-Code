@@ -21,7 +21,7 @@
 #define STEPS 1600          // Number of steps the motor will move, positive = clockwise
 #define OVERTIGHTEN 80      // Number of steps to overtighten
 
-#define CLOSER_MAP_POS 0b00000010 // Closer is in 7th position
+#define CLOSER_MAP_POS 7 // Closer is in 7th position
 
 class Closer: public Subsystem {
     private:
