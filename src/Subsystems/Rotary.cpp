@@ -11,6 +11,7 @@ bool Rotary::init() {
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
     completed = true;
+    Serial.println("Rotary Table Initialized");
     return true;
 }
 

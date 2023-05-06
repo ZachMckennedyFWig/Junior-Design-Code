@@ -9,7 +9,7 @@
 
 #define NUM_BOTTLES 12
 
-bool bottle_map[8] = {1,0,0,0,0,0,0,0};
+bool bottle_map[8] = {1,1,1,1,1,1,1,1};
 
 ProductionManager ProdManager(NUM_BOTTLES, bottle_map);
 
@@ -22,12 +22,12 @@ SubsysHandler myHandler;
 
 void setup() {
   Serial.begin(9600);
-  myHandler.init(RotaryTable,PillDisp,CapCloser,CapCapper);
+  myHandler.init(CapCapper);
 }
 
 void loop() {
-
-  myHandler.update(RotaryTable, PillDisp, CapCloser, CapCapper);
-
-  delay(500);
+  myHandler.update(CapCapper);
+  if(CapCapper.isComplete()) {
+    myHandler.trigger(CapCapper);
+  }
 }

@@ -13,8 +13,8 @@
 #include "Utils/ProductionManager.h"
 
 #define MOTOR_INTERFACE 1
-#define STEP_PIN 6
-#define DIR_PIN 5
+#define STEP_PIN 3
+#define DIR_PIN 2
 
 #define STEPPER_SPEED 200
 #define STEPPER_ACCEL 50

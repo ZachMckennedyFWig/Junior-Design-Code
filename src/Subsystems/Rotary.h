@@ -12,12 +12,13 @@
 #include <Async/Subsystem.h>
 
 #define MOTOR_INTERFACE 1
-#define STEP_PIN 4
-#define DIR_PIN 3
+#define STEP_PIN 12
+#define DIR_PIN 5
 
-#define STEPPER_SPEED 500
-#define STEPPER_ACCEL 100
-#define STEPS 2000           // Number of steps the motor will move, positive = clockwise
+#define STEPPER_SPEED 5000
+#define STEPPER_ACCEL 5000
+#define STEPS -2000           // Number of steps the motor will move, positive = clockwise
+
 
 class Rotary: public Subsystem {
     private:

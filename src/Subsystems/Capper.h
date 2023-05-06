@@ -14,10 +14,10 @@
 #include <Utils/ProductionManager.h>
 
 #define INC_TIME_MS 15  // Milli-seconds between servo position changes
-#define MAX_ANGLE 178 // Servo Max Angle
-#define MIN_ANGLE 46 // Servo Min Angle
+#define MAX_ANGLE 172 // Servo Max Angle
+#define MIN_ANGLE 40 // Servo Min Angle
 
-#define SERVO_PIN 10 // Pin Servo is connected to
+#define SERVO_PIN 33 // Pin Servo is connected to
 
 #define CAPPER_MAP_POS 5 // Capper is in the fifth position
 
@@ -30,7 +30,7 @@ class Capper: public Subsystem {
     enum Directions {CW, CCW};
     Directions direction;
 
-    int8_t target_pos;
+    uint8_t target_pos;
     uint64_t last_change_ms;
 
     bool completed;
