@@ -64,7 +64,7 @@ void SubsysHandler::isComplete() {}
 
 template<typename Subsystem>
 bool SubsysHandler::isComplete(Subsystem& subsystem) {
-  return subsystem.completed;
+  return subsystem.isComplete();
 }
 
 template<typename First, typename... Subsystem>

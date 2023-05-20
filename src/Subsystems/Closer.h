@@ -13,13 +13,14 @@
 #include "Utils/ProductionManager.h"
 
 #define MOTOR_INTERFACE 1
-#define STEP_PIN 7
-#define DIR_PIN 6
+#define STEP_PIN 10
+#define DIR_PIN 11
+#define LIMIT_PIN 52
 
-#define STEPPER_SPEED 400
-#define STEPPER_ACCEL 500
-#define STEPS 1600          // Number of steps the motor will move, positive = clockwise
-#define OVERTIGHTEN 80      // Number of steps to overtighten
+#define STEPPER_SPEED 1800
+#define STEPPER_ACCEL 1000
+#define STEPS 2600         // Number of steps the motor will move, positive = clockwise
+#define OVERTIGHTEN 1000      // Number of steps to overtighten
 
 #define CLOSER_MAP_POS 7 // Closer is in 7th position
 
@@ -37,6 +38,10 @@ class Closer: public Subsystem {
     long dis;       // Stores the distance left the motor has to travel
 
     bool completed; // Stores the completion state
+
+    enum CloseState {IDLE, LOWERING, RAISING};
+
+    CloseState state = CloseState::IDLE;
 
     public:
     /**

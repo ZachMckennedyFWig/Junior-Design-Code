@@ -12,35 +12,49 @@ bool Closer::init(){
 
     stepper1.setMaxSpeed(STEPPER_SPEED);        // Sets the steppers max speed 
     stepper1.setAcceleration(STEPPER_ACCEL);    // Sets the steppers max acceleration
+
     Serial.println("Closer Initialized");
+
+    pinMode(LIMIT_PIN, INPUT_PULLUP);
+
     return true;
 }
 
 void Closer::trigger(){
     // If there is a bottle under the closer, run the closer
-    if(ProdManager->getBottleMap(CLOSER_MAP_POS)) {
+    if(ProdManager->getBottleMap(CLOSER_MAP_POS) && state == CloseState::IDLE) {
         completed = false;                          // Set current state back to false before motion
 
         stepper1.move(STEPS+OVERTIGHTEN);                     // Moves the stepper enough to tighten the cap
 
-        down = false;                               // Sets both states of motion to false. 
-        up = false;
+        state = CloseState::LOWERING;
+        Serial.println("Starting Closer");
     }
 }
 
 void Closer::update(){
     if(!completed) {
         stepper1.run();
-        if(!down && stepper1.distanceToGo() == 0){  // If the downwards motion is not flagged done and the distance remaining is zero
-                down = true;                        // Set the down flag to true
-                stepper1.move(-STEPS);              // reset motor target position back to up pos
+        switch (state) {
+            case CloseState::LOWERING :
+                if (stepper1.distanceToGo() == 0) {
+                    stepper1.move(-STEPS*2);
+                    state = CloseState::RAISING;
+                    Serial.println("Lowered, switching to raising");
+                }
+                break;
+            
+            case CloseState::RAISING :
+                if (digitalRead(LIMIT_PIN) == LOW) {
+                    stepper1.setCurrentPosition(0);
+                    state = CloseState::IDLE;
+                    completed = true;
+                    Serial.println("Limit hit, going to idle");
+                }
+
+            default:
+                break;
         }
-        else if(!up && stepper1.distanceToGo() == 0){   // If the upwards motion is not flagged done and the distance remaining is zero 
-                up = true;                              // Set the up state to true
-        }
-        else{                                   // Prevents setting this variable once the motion is complete
-            completed = true;                   // Set completed state to true, nothing happens when the motion
-        }    
     }                                           //  is done.
 }
 

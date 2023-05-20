@@ -81,7 +81,7 @@ public:
     void setBottleMap(bool new_bottle_map[8]);
 
     /**
-     * @brief method get the remaining number of bottles in this production cycle
+     * @brief method get the remaining number of bottles in this production cycle (Used to check if we keep going)
      * @return int number of bottles or -1 for infinite
     */ 
     int getBottlesRemaining();

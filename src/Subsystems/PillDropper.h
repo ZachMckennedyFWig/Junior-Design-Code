@@ -18,7 +18,7 @@
 
 #define STEPPER_SPEED 200
 #define STEPPER_ACCEL 50
-#define STEPS 827           // Number of steps the motor will move, positive = clockwise
+#define STEPS 800           // Number of steps the motor will move, positive = clockwise
 
 #define PILL_MAP_POS 3 // Pill dropper is in the third position
 

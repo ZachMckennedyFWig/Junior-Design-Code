@@ -14,7 +14,7 @@
 #include <Utils/ProductionManager.h>
 
 #define INC_TIME_MS 15  // Milli-seconds between servo position changes
-#define MAX_ANGLE 172 // Servo Max Angle
+#define MAX_ANGLE 173 // Servo Max Angle
 #define MIN_ANGLE 40 // Servo Min Angle
 
 #define SERVO_PIN 33 // Pin Servo is connected to

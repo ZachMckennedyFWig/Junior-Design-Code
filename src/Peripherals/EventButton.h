@@ -3,16 +3,15 @@
 
 #include <Bounce2.h>
 #include <Arduino.h>
-#include "Peripherals/callbackHelpers.h"
 
 using f_void_void = void(*)();
 
-class EventButton: public Bounce2::Button {
+class EventButton{
     private:
-        // Callbacks
-        f_void_void click_clbk = &Clbk_Helpers::nullClbkFunc;
-        f_void_void press_clbk = &Clbk_Helpers::nullClbkFunc;
-        f_void_void long_press_clbk = &Clbk_Helpers::nullClbkFunc;
+        // Callbacks, the []() {} is Arcane magic with lambda functions to make an empty function that does nothing
+        f_void_void click_clbk = []() {};
+        f_void_void press_clbk = []() {};
+        f_void_void long_press_clbk = []() {};
 
         int pin;
         int input_mode;
@@ -23,7 +22,7 @@ class EventButton: public Bounce2::Button {
         
     public:
 
-        const int NO_LONG_PRESS = 0;
+        static const int NO_LONG_PRESS = 0;
 
         /**
          * @brief Class constructor

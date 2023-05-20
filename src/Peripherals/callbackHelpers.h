@@ -7,7 +7,11 @@ namespace Clbk_Helpers
      * A helper null callback for when we don't want to 
      * assign a callback to an event
     */
-    void nullClbkFunc() {}
+    void nullClbkFunc();
 } // namespace Clbk_Helpers
+
+void Clbk_Helpers::nullClbkFunc() {
+    
+}
 
 #endif

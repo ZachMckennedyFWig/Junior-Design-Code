@@ -24,9 +24,9 @@ void Capper::trigger(){
         last_change_ms = millis(); // Record start time to avoid overflow issues
         direction = Directions::CCW;        // Set direction for first run to CCW
         target_pos = MIN_ANGLE; // Sets the target posotion to the minimum angle 
-        Serial.println("Capper Triggered");
-        Serial.print("Direction = ");
-        Serial.println(direction);
+        //Serial.println("Capper Triggered");
+        //Serial.print("Direction = ");
+        //Serial.println(direction);
     } 
 }
 
@@ -35,13 +35,13 @@ void Capper::update(){
         switch (direction){                                        
             case Directions::CW:
                 if(target_pos <= MIN_ANGLE){                        // If at max angle, mark complete and change direction
-                    Serial.println("Arrived at min angle");
+                    //Serial.println("Arrived at min angle");
                     direction = Directions::CCW;
                     completed = true;
                 } 
                 else{                                               // Otherwise, increment angle, write, and save change time
-                    Serial.print("Dir CW, Target = ");
-                    Serial.println(target_pos);
+                    //Serial.print("Dir CW, Target = ");
+                    //Serial.println(target_pos);
                     target_pos -= 1;
                     myservo.write(target_pos);
                     last_change_ms = millis();
@@ -50,12 +50,12 @@ void Capper::update(){
 
             case Directions::CCW:                                   // If at min angle, mark complete and change direction
                 if(target_pos >= MAX_ANGLE){
-                    Serial.println("Arrived at max angle");
+                    //Serial.println("Arrived at max angle");
                     direction = Directions::CW;
                 }
                 else{                                               // Otherwise, decrement angle, write, and save change time
-                    Serial.print("Dir CCW, Target = ");
-                    Serial.println(target_pos);
+                    //Serial.print("Dir CCW, Target = ");
+                    //Serial.println(target_pos);
                     target_pos += 1;
                     myservo.write(target_pos);
                     last_change_ms = millis();

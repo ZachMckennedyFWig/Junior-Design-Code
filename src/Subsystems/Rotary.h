@@ -10,15 +10,21 @@
 
 #include <AccelStepper.h>
 #include <Async/Subsystem.h>
+#include <Utils/ProductionManager.h>
 
 #define MOTOR_INTERFACE 1
 #define STEP_PIN 12
 #define DIR_PIN 5
+#define INDEXER_PIN 32
 
-#define STEPPER_SPEED 5000
+#define STEPPER_SPEED 2500
 #define STEPPER_ACCEL 5000
-#define STEPS -2000           // Number of steps the motor will move, positive = clockwise
+#define CLOSED_LOOP_STEPS 1800           // Number of steps the motor will move, positive = clockwise
+#define DEAD_STOP_SPEED 400
 
+#define OPEN_LOOP_STEPS 2000
+
+#define INDEXER_MAP_POS 5
 
 class Rotary: public Subsystem {
     private:
@@ -27,9 +33,22 @@ class Rotary: public Subsystem {
         //  Second parameter is the stepping pin on the arduino
         //  Third parameter is the direction pin on the arduino  
         AccelStepper stepper1 = AccelStepper(MOTOR_INTERFACE, STEP_PIN, DIR_PIN);
+        ProductionManager* ProdManager;
+
 
         bool completed;
+
+        enum RotStates {IDLE, ACCEL, CLOSED_LOOP_TRAVEL, DEADSTOP_PHASE, OPEN_LOOP_MOVE};
+
+        RotStates state = RotStates::IDLE;
+
     public:
+
+        /**
+        * @brief Class constructor
+        */
+        Rotary(ProductionManager* arg_ProdManager) : ProdManager(arg_ProdManager) {}
+
         /**
          * @brief method to initalize the rotary table at boot
         */
