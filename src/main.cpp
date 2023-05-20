@@ -10,9 +10,9 @@
 #include "Peripherals/EventButton.h"
 #include "Peripherals/ButtonInterfaceDefs.h"
 
-#define NUM_BOTTLES 12
+#define NUM_BOTTLES -1
 
-bool bottle_map[8] = {1,0,0,0,0,0,0,0};
+bool bottle_map[8] = {1,1,1,1,0,0,0,0};
 
 // Instantiate production manager
 ProductionManager ProdManager(NUM_BOTTLES, bottle_map);
@@ -80,13 +80,14 @@ void loop() {
         Serial.println("Prodmanager Trigger from idle -> going to moving");
         Serial.print("Prodmanager bottles remaining: ");
         Serial.println(ProdManager.getBottlesRemaining());
-        myHandler.trigger(CapCloser, CapCapper, PillDisp);
+        //myHandler.trigger(CapCloser, CapCapper, PillDisp);
+        myHandler.trigger(CapCloser, CapCapper);
         machine_state = States::DISPENSING;
       }
       break;
 
     case States::DISPENSING:
-      if(myHandler.isComplete(CapCloser, CapCapper, PillDisp)) {
+      if(myHandler.isComplete(CapCloser, CapCapper)) {
         Serial.println("Dispensing Complete -> going to idle");
         RotaryTable.trigger();
         machine_state = States::MOVING;
@@ -97,7 +98,7 @@ void loop() {
       if(RotaryTable.isComplete()) {
         Serial.println("Move Complete -> going to dispensing");
         machine_state = States::IDLE;
-        ProdManager.flagCycleComplete(BotHandle.hasBottle());
+        ProdManager.flagCycleComplete(true);
       }
       break;
 
